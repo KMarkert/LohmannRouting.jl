@@ -1,4 +1,6 @@
-using NetCDF, StatsBase
+using StatsBase
+
+include("constants.jl")
 
 function match_dates(df::DataFrame,dates::Vector{Date};datecol::Symbol=:datetime)
     # TODO: check to make sure that dates range is within df[:,"datetime"] range
@@ -8,29 +10,6 @@ function match_dates(df::DataFrame,dates::Vector{Date};datecol::Symbol=:datetime
 
     df[indices,:]
 
-end
-
-function ncvars_to_gt(ds,xvar::AbstractString,yvar::AbstractString)
-    xvar = NetCDF.readvar(ds[xvar])
-    yvar = NetCDF.readvar(ds[yvar])
-
-    yres = round(yvar[2] - yvar[1], sigdigits=9)
-    xres = round(xvar[2] - xvar[1], sigdigits=9)
-    
-    uly = (yvar[1] + abs(yres/2))
-    ulx = (xvar[1] - abs(xres/2))
-
-    gt = [ulx,xres,0,uly,0,yres]
-
-    return gt
-end
-
-function affinetransform(gt,xy)
-    x,y = xy
-    col = Int(round((x - gt[1]) / gt[2]))
-    row = Int(round((y - gt[4]) / gt[6]))
-
-    return col,row
 end
 
 function upsample(img, dshape; method=mean)
@@ -74,14 +53,12 @@ function dd_to_meters(lon::Float64, lat::Float64; scale::Float64=0.1)
 
     radlat = deg2rad(lat) # convert degree latitude to radians
 
-    a::Int64 = 6378137 # radius of Earth in meters
-
     ba::Float64 = 0.99664719 # constant of b/a
 
     ss = atan(ba*tan(radlat)) # calculate the reduced latitude
 
     # factor to convert meters to decimal degrees for X axis
-    xfct = (pi / 180.0) * a * cos(ss)
+    xfct = (pi / 180.0) * EARTHRADIUS * cos(ss)
 
     # factor to convert meters to decimal degrees for Y axis
     yfct = (111132.92-559.82 * cos(2*radlat)+1.175*cos(4*radlat)-
