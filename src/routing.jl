@@ -103,7 +103,7 @@ end
 function rout(runoff,unit_hydrograph,area)
 
     n_cells = size(unit_hydrograph)[end]
-    days = size(runoff_in)[end]
+    days = size(runoff)[end]
     buffer = size(unit_hydrograph)[1]
 
     basinuh = zeros(Float64,n_cells,days) # ...basin wide UH
