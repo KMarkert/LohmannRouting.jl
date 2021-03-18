@@ -108,7 +108,6 @@ function rout(runoff,unit_hydrograph,area)
 
     basinuh = zeros(Float64,n_cells,days) # ...basin wide UH
     griduh = zeros(Float64,days+buffer,buffer)
-    println(size(griduh))
 
     for i in 1:n_cells
 
