@@ -10,6 +10,7 @@ export upstream_catchments,
        flow_sequence
        calc_xmask,
        findnearest,
+       upsample,
        make_irf,
        make_river_irf,
        make_grid_uh,
