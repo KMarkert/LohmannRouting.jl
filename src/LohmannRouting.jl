@@ -2,8 +2,6 @@ __precompile__()
 
 module LohmannRouting
 
-include("utils.jl")
-include("watersheds.jl")
 include("routing.jl")
 
 export upstream_catchments,
