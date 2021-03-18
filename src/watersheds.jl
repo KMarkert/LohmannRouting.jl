@@ -1,6 +1,5 @@
 using WhereTheWaterFlows
 
-include("utils.jl")
 
 function upstream_catchments(dem::AbstractArray, pourpt::CartesianIndex{2}; snap_pourpt::Bool=true,search_radius=10)
     
